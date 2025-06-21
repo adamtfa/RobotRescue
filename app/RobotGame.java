@@ -1,3 +1,8 @@
+/**
+* Klasse für den Spielablauf.
+* @author Adam Tuffaha & Nando Patton
+*/
+
 package app;
 
 import model.Robot;
