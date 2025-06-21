@@ -1,6 +1,6 @@
 /**
 * Klasse für das Shuttle, das vom Roboter repariert werden muss.
-* @author Adam Tuffaha & Nando Patton
+* @author Adam Tuffaha & Nando Makeem Patton
 */
 
 

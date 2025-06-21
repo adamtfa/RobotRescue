@@ -1,6 +1,6 @@
 /**
 * Klasse für das Hauptmenü, zeigt den Spielstand des Spiels.
-* @author Adam Tuffaha & Nando Patton
+* @author Adam Tuffaha & Nando Makeem Patton
 */
 package app;
 

@@ -1,6 +1,6 @@
 /**
 * Klasse für den Roboter.
-* @author Adam Tuffaha & Nando Patton
+* @author Adam Tuffaha & Nando Makeem Patton
 */
 
 

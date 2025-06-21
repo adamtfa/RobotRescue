@@ -1,6 +1,6 @@
 /**
 * Klasse für den Spielablauf.
-* @author Adam Tuffaha & Nando Patton
+* @author Adam Tuffaha & Nando Makeem Patton
 */
 
 package app;

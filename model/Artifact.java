@@ -1,6 +1,6 @@
 /**
 * Klasse für die Artefakte, die vom Roboter gefunden werden können.
-* @author Adam Tuffaha & Nando Patton
+* @author Adam Tuffaha & Nando Makeem Patton
 */
 
 package model;

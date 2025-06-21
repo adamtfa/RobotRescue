@@ -1,6 +1,6 @@
 /**
 * Klasse für die Räume, die vom Roboter betreten werden können.
-* @author Adam Tuffaha & Nando Patton
+* @author Adam Tuffaha & Nando Makeem Patton
 */
 
 
