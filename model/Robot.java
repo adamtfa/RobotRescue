@@ -1,3 +1,9 @@
+/**
+* Klasse für den Roboter.
+* @author Adam Tuffaha & Nando Patton
+*/
+
+
 package model;
 
 import java.io.Serializable;

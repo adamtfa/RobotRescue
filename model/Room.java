@@ -1,3 +1,9 @@
+/**
+* Klasse für die Räume, die vom Roboter betreten werden können.
+* @author Adam Tuffaha & Nando Patton
+*/
+
+
 package model;
 
 import challenges.Challenge;

@@ -1,3 +1,9 @@
+/**
+* Klasse für das Shuttle, das vom Roboter repariert werden muss.
+* @author Adam Tuffaha & Nando Patton
+*/
+
+
 package model;
 
 import java.io.Serializable;
@@ -14,14 +20,26 @@ public class Shuttle implements Serializable {
             new Artifact(Artifact.ENERGY_CRYSTAL)
     };
 
+    /**
+     * Erstellt ein Shuttle und dessen Namen.
+     * @param name
+     */
     public Shuttle(String name) {
         this.name = name;
     }
 
+    /**
+     * Gibt den Namen des Shuttles zurück.
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gibt die Artefakte in einem Array zurück.
+     * @return artifacts
+     */
     public Artifact[] getArtifacts() {
         return artifacts;
     }
