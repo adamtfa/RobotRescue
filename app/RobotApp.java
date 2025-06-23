@@ -44,8 +44,25 @@ public class RobotApp {
         System.out.println("You're in the main menu");
         System.out.println("What do you want to do next?");
         System.out.println("(1) Start new game");
+        
+        if(isGameRunning() == true) {
+            System.out.println("(2) Continue game");
+        }
+        
+        if(hasSavedGame() == true) {
+            System.out.println("(3) Load game");
+        }
+
+        if(isGameRunning() == true) {
+            System.out.println("(4) Save game");
+        }
+        
+        if(hasSavedGame() == true) {
+            System.out.println("(5) Delete game");
+        }
+        
         System.out.println("(6) Quit");
-        System.out.println("");
+        System.out.println("\n========================================");
         System.out.println("Please choose a number between 1 and 6: ");
     }
 
@@ -70,9 +87,27 @@ public class RobotApp {
                 this.startNewGame();
                 break;
             case "2":
+                if(isGameRunning() == true) {
+                    this.continueGame();
+                }
                 break;
-            // ...
+            case "3":
+                if(hasSavedGame() == true) {
+                    this.loadGame();
+                }
+                break;
+            case "4":
+                if(isGameRunning() == true) {
+                    this.saveGame();
+                }
+                break;
+            case "5":
+                if(hasSavedGame() == true) {
+                    this.deleteGame();
+                }
+                break;
             case "6":
+                System.exit(0);
                 break;
             default:
                 System.out.println("Invalid input. Please choose a correct number between 1 and 6");
