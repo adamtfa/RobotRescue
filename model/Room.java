@@ -13,7 +13,7 @@ public class Room implements Serializable {
 
     // Bitte serialVersionUID beibehalten, damit die Klasse bei der
     // Speicherung als Datei (Serialisierung) und beim Laden (Deserialisierung)
-    // konsistent bleibt und Versionierungsprobleme vermieden werden.
+    // konsistent bleibt und Versionierungsprobleme vermieden werden. 
     private static final long serialVersionUID = 3947234501234725063L;
 
     private final int number;
@@ -26,6 +26,7 @@ public class Room implements Serializable {
         this.challenge = challenge;
         this.articat = artifact;
     }
+
 
     public int getNumber(){
         return number;
