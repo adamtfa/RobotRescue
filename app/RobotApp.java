@@ -107,6 +107,7 @@ public class RobotApp {
                 }
                 break;
             case "6":
+                System.out.println("See you!");
                 System.exit(0);
                 break;
             default:
