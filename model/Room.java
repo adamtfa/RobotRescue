@@ -7,7 +7,6 @@
 package model;
 
 import challenges.Challenge;
-
 import java.io.Serializable;
 
 public class Room implements Serializable {
@@ -17,5 +16,36 @@ public class Room implements Serializable {
     // konsistent bleibt und Versionierungsprobleme vermieden werden.
     private static final long serialVersionUID = 3947234501234725063L;
 
+    private final int number;
+    private final Challenge challenge;
+    private final String articat;
+    private boolean open = false;
 
+    public Room(int number, Challenge challenge, String artifact) {
+        this.number = number;
+        this.challenge = challenge;
+        this.articat = artifact;
+    }
+
+    public int getNumber(){
+        return number;
+    }
+
+    public Challenge getChallenge() {
+        return challenge;
+    }
+
+    public String getArtifact() {
+        return articat;
+    }
+
+    public boolean isOpen(){
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        if(open && !this.open) {
+            this.open = true;
+        }
+    }
 }

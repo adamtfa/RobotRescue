@@ -11,8 +11,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
-import model.Robot;
-
 public class RobotApp {
 
     public static final String SAVE_FILE_NAME = "save";
@@ -44,6 +42,9 @@ public class RobotApp {
         System.out.println("You're in the main menu");
         System.out.println("What do you want to do next?");
         System.out.println("(1) Start new game");
+        if (isGameRunning() && !isGameFinished()){
+            System.out.println("continue game");
+        }
         System.out.println("(6) Quit");
         System.out.println("");
         System.out.println("Please choose a number between 1 and 6: ");
