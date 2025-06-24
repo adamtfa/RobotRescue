@@ -18,13 +18,13 @@ public class Room implements Serializable {
 
     private final int number;
     private final Challenge challenge;
-    private final String artifcat;
+    private final String artifact;
     private boolean open = false;
 
     public Room(int number, Challenge challenge, String artifact) {
         this.number = number;
         this.challenge = challenge;
-        this.artifcat = artifact;
+        this.artifact = artifact;
     }
 
 
@@ -37,7 +37,7 @@ public class Room implements Serializable {
     }
 
     public String getArtifact() {
-        return artifcat;
+        return artifact;
     }
 
     public boolean isOpen(){
