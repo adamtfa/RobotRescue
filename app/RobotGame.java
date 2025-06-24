@@ -20,7 +20,7 @@ public class RobotGame {
      * Initialisiert einen neuen Roboter und ein Shuttle.
      */
     public RobotGame() {
-        this.robot = new Robot();
+        this.robot = new Robot("name");
         this.shuttle = new Shuttle("name");
     }
 
