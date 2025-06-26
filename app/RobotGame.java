@@ -60,7 +60,7 @@ public class RobotGame {
      * Gibt auf der Konsole aus, dass bzw. ob das Spiel gestartet ist.
      */
     public void run() {
-        System.out.println("========================================");
+        System.out.println("========================================\n");
         System.out.println("The game has started. Or not?");
         
         if(isGameRunning() == true) {
@@ -70,6 +70,8 @@ public class RobotGame {
             System.out.println("(3) Recharge energy");
             System.out.println("(4) Repair");
             System.out.println("(5) Exit to main menu");
+            System.out.println("\n========================================");
+            System.out.println("Please choose a number between 1 and 5: ");
         }
     }
 

@@ -33,7 +33,7 @@ public class RobotApp {
                 app.showMainMenu();
                 String choice = app.readUserInput();
                 app.handleUserInput(choice);
-                System.out.println("====================");
+                
             }
         }
     }
