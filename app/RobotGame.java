@@ -19,8 +19,8 @@ public class RobotGame {
     /**
      * Initialisiert einen neuen Roboter und ein Shuttle.
      */
-    public RobotGame() {
-        this.robot = new Robot("name");
+    public RobotGame(String name) {
+        this.robot = new Robot(name);
         this.shuttle = new Shuttle("name");
     }
 
@@ -60,7 +60,17 @@ public class RobotGame {
      * Gibt auf der Konsole aus, dass bzw. ob das Spiel gestartet ist.
      */
     public void run() {
+        System.out.println("========================================");
         System.out.println("The game has started. Or not?");
+        
+        if(isGameRunning() == true) {
+            System.out.println("Your robot's name is: " + robot.getName());
+            System.out.println("(1) Explore station");
+            System.out.println("(2) Show status");
+            System.out.println("(3) Recharge energy");
+            System.out.println("(4) Repair");
+            System.out.println("(5) Exit to main menu");
+        }
     }
 
     /**
@@ -70,4 +80,5 @@ public class RobotGame {
     public Robot getRobot() {
         return robot;
     }
+
 }

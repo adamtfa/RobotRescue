@@ -28,10 +28,13 @@ public class RobotApp {
         RobotApp app = new RobotApp();
 
         while (true) {
-            app.showMainMenu();
-            String choice = app.readUserInput();
-            app.handleUserInput(choice);
-            System.out.println("====================");
+
+            if(!app.isGameRunning()) {
+                app.showMainMenu();
+                String choice = app.readUserInput();
+                app.handleUserInput(choice);
+                System.out.println("====================");
+            }
         }
     }
 
@@ -43,19 +46,19 @@ public class RobotApp {
         System.out.println("What do you want to do next?");
         System.out.println("(1) Start new game");
         
-        if(isGameRunning() == true) {
+        if(isGameRunning()) {
             System.out.println("(2) Continue game");
         }
         
-        if(hasSavedGame() == true) {
+        if(hasSavedGame()) {
             System.out.println("(3) Load game");
         }
 
-        if(isGameRunning() == true) {
+        if(isGameRunning()) {
             System.out.println("(4) Save game");
         }
         
-        if(hasSavedGame() == true) {
+        if(hasSavedGame()) {
             System.out.println("(5) Delete game");
         }
         
@@ -87,21 +90,29 @@ public class RobotApp {
             case "2":
                 if(isGameRunning() == true) {
                     this.continueGame();
+                } else {
+                    System.out.println("There's currently no game to continue.");
                 }
                 break;
             case "3":
                 if(hasSavedGame() == true) {
                     this.loadGame();
+                } else {
+                    System.out.println("There's currently no game to load.");
                 }
                 break;
             case "4":
                 if(isGameRunning() == true) {
                     this.saveGame();
+                } else {
+                    System.out.println("There's currently no game to save.");
                 }
                 break;
             case "5":
                 if(hasSavedGame() == true) {
                     this.deleteGame();
+                } else {
+                    System.out.println("There's currently no game to delete.");
                 }
                 break;
             case "6":
@@ -118,7 +129,11 @@ public class RobotApp {
      * Erstellt ein neues Spiel. 
      */
     private void startNewGame() {
-        this.game = new RobotGame();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Choose a name for your robot: ");
+        String name = scanner.nextLine();
+
+        this.game = new RobotGame(name);
         continueGame();
     }
 
