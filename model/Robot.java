@@ -103,4 +103,5 @@ public class Robot implements Serializable {
     public boolean isOperational() {
         return operational;
     }
+
 }

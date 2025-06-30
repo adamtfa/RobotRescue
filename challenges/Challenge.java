@@ -54,4 +54,6 @@ public interface Challenge extends Serializable {
      * @return a hint string for the challenge
      */
     String getHint();
+
+    String getName();
 }
