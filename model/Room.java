@@ -27,7 +27,6 @@ public class Room implements Serializable {
         this.artifact = artifact;
     }
 
-
     public int getNumber(){
         return number;
     }
@@ -47,6 +46,20 @@ public class Room implements Serializable {
     public void setOpen(boolean open) {
         if(open && !this.open) {
             this.open = true;
+        }
+    }
+
+    public void roomStatus() {
+        String status;
+        if(open == true) {
+            status = "open";
+        } else {
+            status = "closed";
+        }
+        System.out.println("Room " + number + " " + status);
+
+        if(open == true) {
+            System.out.print(" Challenge" + challenge.getName());
         }
     }
 }
