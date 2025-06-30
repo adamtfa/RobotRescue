@@ -104,4 +104,13 @@ public class Robot implements Serializable {
         return operational;
     }
 
+    public void setEnergy(int value) {
+        if (value < 0)  {
+            value = 0;
+        }
+        if (value > 100) {
+            value = 100;
+        }
+    this.energy = value;
+    }
 }

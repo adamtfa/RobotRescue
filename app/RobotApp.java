@@ -32,8 +32,7 @@ public class RobotApp {
             if(!app.isGameRunning()) {
                 app.showMainMenu();
                 String choice = app.readUserInput();
-                app.handleUserInput(choice);
-                
+                app.handleUserInput(choice);   
             }
         }
     }
@@ -120,7 +119,7 @@ public class RobotApp {
                 System.exit(0);
                 break;
             default:
-                System.out.println("Invalid input. Please choose a correct number between 1 and 6");
+                System.out.println("Invalid input. Please choose a correct number between 1 and 6.");
                 break;
         }
     }

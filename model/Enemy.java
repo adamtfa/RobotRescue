@@ -33,7 +33,7 @@ public abstract class Enemy {
 }
 
 class SpaceCreeper extends Enemy {
-    public SpaceCreeper(String name, int lifePoints) {
+    public SpaceCreeper() {
         super("SpaceCreeper", 100);
     }
     public void fight(Robot robot) {
@@ -43,7 +43,7 @@ class SpaceCreeper extends Enemy {
 }
 
 class ElderGuardian extends Enemy {
-    public ElderGuardian(String name, int lifePoints) {
+    public ElderGuardian() {
         super("ElderGuardian", 150);
     }
     public void fight(Robot robot) {

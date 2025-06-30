@@ -20,6 +20,7 @@ public class Room implements Serializable {
     private final Challenge challenge;
     private final String artifact;
     private boolean open = false;
+    private boolean discovered = false;
 
     public Room(int number, Challenge challenge, String artifact) {
         this.number = number;
@@ -49,17 +50,14 @@ public class Room implements Serializable {
         }
     }
 
-    public void roomStatus() {
-        String status;
-        if(open == true) {
-            status = "open";
-        } else {
-            status = "closed";
-        }
-        System.out.println("Room " + number + " " + status);
+    public boolean isDiscovered() {
+        return discovered;
+    }
 
-        if(open == true) {
-            System.out.print(" Challenge" + challenge.getName());
+    public void setDiscovered(boolean discovered) {
+        if(discovered && !this.discovered) {
+            this.discovered = true;
         }
     }
 }
+
