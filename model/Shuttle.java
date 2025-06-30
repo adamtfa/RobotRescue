@@ -7,7 +7,7 @@
 package model;
 
 import java.io.Serializable;
-
+//import model.Artifact;
 public class Shuttle implements Serializable {
 
     private static final long serialVersionUID = 3230694418L;
@@ -78,5 +78,15 @@ public class Shuttle implements Serializable {
         // Falls alle installiert sind, gib true zurück.
         System.out.println("Method not implemented yet.");
         return true;
+    }
+
+    public void foundArtifacts() {
+        for(Artifact a : artifacts) {
+            if(a.isInstalled()) {
+                System.out.println("The module " + a.getName() + " is installed.");
+            } else {
+                System.out.println("The module " + a.getName() + " is yet to be found.");
+            }
+        }
     }
 }
