@@ -5,13 +5,14 @@
 
 package app;
 
+import java.util.Random;
 import java.util.Scanner;
-
 import model.Robot;
 import model.Room;
 import model.Shuttle;
-import model.Artifact;
 import model.Enemy;
+import model.SpaceCreeper;
+import model.ElderGuardian;
 
 public class RobotGame {
     private final Robot robot;
@@ -46,7 +47,7 @@ public class RobotGame {
 
     /**
      * Gibt den Status des aktuellen Spiels zurück.
-     * @return true, wenn das Spiel beendet ist
+     * @return true, wenn das Spiel beendet ist 
      */
     public boolean isGameFinished() {
         return gameFinished;
@@ -125,7 +126,7 @@ public class RobotGame {
 
     public void exploreStation() {
         double chance = Math.random();
-
+        
         if(chance < 0.5) {
             System.out.println("Nothing happened, continue exploring.");
         } else if (chance < 0.75) {
@@ -135,7 +136,7 @@ public class RobotGame {
         }
         int newEnergy = robot.getEnergy() - 10;
         robot.setEnergy(newEnergy);
-    }
+        }
 
     public void showStatus() {
         System.out.println("Robot: " + robot.getName());
@@ -194,7 +195,7 @@ public class RobotGame {
                 case "2":
                     if(robot.getExperiencePoints() < 50) {
                         System.out.println("You need a minimum of 50 EXP to carry out this action!");
-                    break;
+                        break;
                     }
                     //if(robot.getExperiencePoints() >= 50) {
                         for(Artifact a: shuttle.getArtifacts()) {
@@ -217,8 +218,63 @@ public class RobotGame {
                     break;
                 default:
                     System.out.println("Invalid input. Please choose a correct number between 1 and 3.");
-                    break;
-            }   
-        }         
-    }  
+                        break;
+                    }
+                }
+            }
+                public static Enemy generateEnemy(){
+        
+        double Random = Math.random();
+        
+        if(Random < 0.5){
+            return new SpaceCreeper();
+        }else{
+            return new ElderGuardian();
+        }
+    }
+    public void EnemyEncounter(Enemy enemy){
+        Enemy enemies = generateEnemy();
+        System.out.println("Warning! Enemy encountered: " +  enemies.name);
+
+        boolean finished = false;
+
+        while (finished){
+            System.out.println("\nWhat do you want to do?");
+            System.out.println("(1) Fight");
+            System.out.println("(2) Play a strategie game");
+            System.out.println("(3) Flee (10% chance)");
+            System.out.print("Your choice");
+            String choice = scanner.nextLine();
+
+            switch(choice){
+                case"1":
+                while (robot.isOperational() && !enemies.isDefeated()) { 
+                    
+                    System.out.println("You attacks");
+                    if(Math.random() < 0.8){
+                        int damage = 10;
+                        System.out.println("You hits for " + damage + " damage!");
+                        enemies.takeDamage(damage);
+                    }else{
+                        System.out.println("You missed!");
+                    }
+                    if(enemies.isDefeated()){
+                        System.out.println("Ënemy defeated!");
+                        robot.addExperiencePoints(5);
+                        finished = true;
+                        break;
+                    }
+
+                    enemies.fight(robot);
+
+                    if(!robot.isOperational()){
+                        System.out.println("You died");
+                        break;
+                    }
+
+                }
+            }
+        }
+
+    }
 }
