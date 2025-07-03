@@ -7,11 +7,15 @@ package app;
 
 import java.util.Random;
 import java.util.Scanner;
+
+import games.TicTacToe;
+import games.Game;
 import model.Robot;
 import model.Room;
 import model.Shuttle;
 import model.Enemy;
 import model.SpaceCreeper;
+import model.Artifact;
 import model.ElderGuardian;
 
 public class RobotGame {
@@ -222,7 +226,8 @@ public class RobotGame {
                     }
                 }
             }
-                public static Enemy generateEnemy(){
+                
+    private Enemy generateEnemy(){
         
         double Random = Math.random();
         
@@ -232,8 +237,59 @@ public class RobotGame {
             return new ElderGuardian();
         }
     }
-    public void EnemyEncounter(Enemy enemy){
+
+    private Game generateGame() {
+
+        double random = Math.random();
+
+        if(random < 0.5){
+            return new TicTacToe();
+        }else{
+            return new Nim();
+        }
+    }
+
+    private void fightingMechanic() {
+
         Enemy enemies = generateEnemy();
+        boolean finished = false;
+        double random = Math.random();
+
+        while (robot.isOperational() && !enemies.isDefeated()) { 
+                    
+            System.out.println("You attack!");
+            if (random < 0.8){
+                int damage = 10;
+                System.out.println("Your hit has dealt " + damage + " damage!");
+                enemies.takeDamage(damage);
+            } else {
+                System.out.println("You missed!");
+            }
+
+            if (enemies.isDefeated()){
+                System.out.println("Enemy defeated!");
+                robot.addExperiencePoints(5);
+                finished = true;
+                break;
+            }
+
+            enemies.fight(robot);
+
+            if(!robot.isOperational()) {
+                System.out.println("You died");
+                break;
+            }
+
+        }
+    }
+
+    public void enemyEncounter(Enemy enemy){
+
+        Enemy enemies = generateEnemy();
+        Game games = generateGame();
+        double random = Math.random();
+        //Game Nim = new Nim();
+
         System.out.println("Warning! Enemy encountered: " +  enemies.name);
 
         boolean finished = false;
@@ -241,40 +297,46 @@ public class RobotGame {
         while (finished){
             System.out.println("\nWhat do you want to do?");
             System.out.println("(1) Fight");
-            System.out.println("(2) Play a strategie game");
-            System.out.println("(3) Flee (10% chance)");
-            System.out.print("Your choice");
+            System.out.println("(2) Play a minigame");
+            System.out.println("(3) Try to flee (10% chance)");
+            System.out.print("Your choice: ");
             String choice = scanner.nextLine();
 
             switch(choice){
-                case"1":
-                while (robot.isOperational() && !enemies.isDefeated()) { 
-                    
-                    System.out.println("You attacks");
-                    if(Math.random() < 0.8){
-                        int damage = 10;
-                        System.out.println("You hits for " + damage + " damage!");
-                        enemies.takeDamage(damage);
-                    }else{
-                        System.out.println("You missed!");
+                case "1":
+                    fightingMechanic();
+                    break;
+                case "2":
+                    System.out.println("A game is being selected...");
+                    if(games instanceof TicTacToe) {
+                        System.out.println("TicTacToe was selected.");
+                    } else if (games instanceof Nim) {
+                            System.out.println("Nim was selected.");
                     }
-                    if(enemies.isDefeated()){
-                        System.out.println("Ënemy defeated!");
+
+                    while (!games.isFinished()) {
+                        games.playNextRound();
+                    }
+
+                    if (games.isWon()) {
+                     System.out.println("You've won the game and defeated the " + enemies.name + " !");
                         robot.addExperiencePoints(5);
-                        finished = true;
-                        break;
+                        enemies.takeDamage(enemy.lifePoints);
+                    } else if (games.isLost()) {
+                        System.out.println("You've been defeated, try again!");
+                        robot.addExperiencePoints(1);
+                    } else {
+                        System.out.println("The game ended in a tie.");
                     }
-
-                    enemies.fight(robot);
-
-                    if(!robot.isOperational()){
-                        System.out.println("You died");
-                        break;
+                    break;
+                case "3":
+                    if (random < 0.1) {
+                        System.out.println("You have successfully managed to flee the enemy!");
+                    } else {
+                        fightingMechanic();
                     }
-
-                }
+                    break;
             }
         }
-
     }
 }

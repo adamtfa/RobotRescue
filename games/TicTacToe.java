@@ -10,9 +10,6 @@ public class TicTacToe implements Game {
     private int currentRound = 0;
     private int currentPlayer = 1;
 
-
-
-
     public TicTacToe(){
         for (int i=0; i<3 ;i++){
             for (int j = 0; j<3; j++){
@@ -20,21 +17,44 @@ public class TicTacToe implements Game {
             }
         }
     }
+
     private void printBoard() {
-        for (int i=0; i<3; i++) {
-            for (int j=0; j<3; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 char c = '-';
-                if (board[i][j] == 1) c = 'X';
-                else if (board[i][j] == 2) c = 'O';
+                if (board[i][j] == 1) {
+                    c = 'X';
+                } else if (board[i][j] == 2) {
+                    c = 'O';
+                }
                 System.out.print(c + " ");
             }
             System.out.println();
         }
         System.out.println();
     }
-    public void playNextRound(){
-        System.out.println("Round " + currentRound + ":");
+    public void playNextRound() {
+        System.out.println("Round: " + currentRound);
         printBoard();
-        
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public boolean isWon() {
+        return won;
+    }
+
+    public boolean isLost() {
+        return lost;
+    }
+
+    public boolean isTie() {
+        return tie;
     }
 }

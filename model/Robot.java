@@ -7,7 +7,6 @@ package model;
 
 import java.io.Serializable;
 
-import app.RobotGame;
 public class Robot implements Serializable {
 
 
