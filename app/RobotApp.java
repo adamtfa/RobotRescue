@@ -1,7 +1,3 @@
-/**
-* Klasse für das Hauptmenü, zeigt den Spielstand des Spiels.
-* @author Adam Tuffaha & Nando Makeem Patton
-*/
 package app;
 
 import java.io.File;
@@ -15,7 +11,6 @@ public class RobotApp {
 
     public static final String SAVE_FILE_NAME = "save";
     private RobotGame game;
-    private boolean gameRunning = true;
 
     /**
      * Main-Methode des Spiels.
@@ -26,13 +21,16 @@ public class RobotApp {
         System.out.println("========================================\n");
 
         RobotApp app = new RobotApp();
+        Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            app.showMainMenu();
+            String choice = scanner.nextLine();
+            app.handleUserInput(choice);
 
-            if(!app.isGameRunning()) {
-                app.showMainMenu();
-                String choice = app.readUserInput();
-                app.handleUserInput(choice);   
+            // Wenn das Spiel beendet wurde, Spielstatus zurücksetzen
+            if (app.game != null && app.game.isGameFinished()) {
+                app.game = null;
             }
         }
     }
@@ -40,30 +38,30 @@ public class RobotApp {
     /**
      * Zeigt das Hauptmenü und dessen verfügbare Aktionen.
      */
-    private void showMainMenu() {
+    public void showMainMenu() {
         System.out.println("You're in the main menu");
         System.out.println("What do you want to do next?");
         System.out.println("(1) Start new game");
-        
-        if(isGameRunning()) {
+
+        if (isGameRunning()) {
             System.out.println("(2) Continue game");
         }
-        
-        if(hasSavedGame()) {
+
+        if (hasSavedGame()) {
             System.out.println("(3) Load game");
         }
 
-        if(isGameRunning()) {
+        if (isGameRunning()) {
             System.out.println("(4) Save game");
         }
-        
-        if(hasSavedGame()) {
+
+        if (hasSavedGame()) {
             System.out.println("(5) Delete game");
         }
-        
+
         System.out.println("(6) Quit");
         System.out.println("\n========================================");
-        System.out.println("Please choose a number between 1 and 6: ");
+        System.out.print("Please choose a number between 1 and 6: ");
     }
 
     /**
@@ -72,43 +70,41 @@ public class RobotApp {
      */
     private String readUserInput() {
         Scanner scanner = new Scanner(System.in);
-        String userInput = scanner.nextLine();
-        // TBD
-        return userInput;
+        return scanner.nextLine();
     }
 
     /**
      * Prüft und verarbeitet den Input. (gültig/ungültig etc.)
      * @param input
      */
-    private void handleUserInput(String input) {
+    public void handleUserInput(String input) {
         switch (input) {
             case "1":
                 this.startNewGame();
                 break;
             case "2":
-                if(isGameRunning() == true) {
+                if (isGameRunning()) {
                     this.continueGame();
                 } else {
                     System.out.println("There's currently no game to continue.");
                 }
                 break;
             case "3":
-                if(hasSavedGame() == true) {
+                if (hasSavedGame()) {
                     this.loadGame();
                 } else {
                     System.out.println("There's currently no game to load.");
                 }
                 break;
             case "4":
-                if(isGameRunning() == true) {
+                if (isGameRunning()) {
                     this.saveGame();
                 } else {
                     System.out.println("There's currently no game to save.");
                 }
                 break;
             case "5":
-                if(hasSavedGame() == true) {
+                if (hasSavedGame()) {
                     this.deleteGame();
                 } else {
                     System.out.println("There's currently no game to delete.");
@@ -127,27 +123,30 @@ public class RobotApp {
     /**
      * Erstellt ein neues Spiel. 
      */
-    private void startNewGame() {
+    public void startNewGame() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Choose a name for your robot: ");
         String name = scanner.nextLine();
 
         this.game = new RobotGame(name);
-        continueGame();
+        game.run();
     }
 
     /**
      * Setzt ein laufendes Spiel fort.
      */
-    private void continueGame() {
-        this.game.setGameRunning(true);
-        this.game.run();
+    public void continueGame() {
+        if (game != null && game.isGameRunning()) {
+            game.run();
+        } else {
+            System.out.println("No running game to continue.");
+        }
     }
 
     /**
      * Löscht ein bereits vorhandenes Spiel.
      */
-    private void deleteGame() {
+    public void deleteGame() {
         if (new File(SAVE_FILE_NAME).delete()) {
             System.out.println("Game deleted!");
         }
@@ -156,22 +155,21 @@ public class RobotApp {
     /**
      * Speichert den aktuellen Spielstand.
      */
-    private void saveGame() {
+    public void saveGame() {
         try (FileOutputStream fos = new FileOutputStream(SAVE_FILE_NAME);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(game);
             oos.flush();
+            System.out.println("Game saved!");
         } catch (Exception ex) {
             System.err.println("Something went wrong while saving the game: " + ex.getMessage());
-            return;
         }
-        System.out.println("Game saved!");
     }
 
     /**
      * Lädt den Spielstand eines bereits vorhandenen Spiels.
      */
-    private void loadGame() {
+    public void loadGame() {
         try (FileInputStream fis = new FileInputStream(SAVE_FILE_NAME);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             this.game = (RobotGame) ois.readObject();
@@ -185,15 +183,15 @@ public class RobotApp {
      * Prüft, ob das Spiel läuft.
      * @return true
      */
-    private boolean isGameRunning() {
-        return game != null;
+    public boolean isGameRunning() {
+        return game != null && game.isGameRunning();
     }
 
     /**
      * Prüft, ob das Spiel beendet ist/wurde.
      * @return true
      */
-    private boolean isGameFinished() {
+    public boolean isGameFinished() {
         return game != null && game.isGameFinished();
     }
 
@@ -201,8 +199,7 @@ public class RobotApp {
      * Prüft, ob es einen gespeicherten Spielstand gibt.
      * @return true
      */
-    private boolean hasSavedGame() {
+    public boolean hasSavedGame() {
         return new File(SAVE_FILE_NAME).exists();
     }
-
 }

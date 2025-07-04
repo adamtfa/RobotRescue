@@ -5,18 +5,17 @@
 
 package app;
 
-import java.util.Random;
-import java.util.Scanner;
-
-import games.TicTacToe;
 import games.Game;
+import games.Nim;
+import games.TicTacToe;
+import java.util.Scanner;
+import model.Artifact;
+import model.ElderGuardian;
+import model.Enemy;
 import model.Robot;
 import model.Room;
 import model.Shuttle;
-import model.Enemy;
 import model.SpaceCreeper;
-import model.Artifact;
-import model.ElderGuardian;
 
 public class RobotGame {
     private final Robot robot;
@@ -69,24 +68,25 @@ public class RobotGame {
      * Gibt auf der Konsole aus, dass bzw. ob das Spiel gestartet ist.
      */
     public void run() {
-        System.out.println("========================================\n");
-        System.out.println("The game has started. Or not?");
-        
-        if(isGameRunning() == true) {
+        Scanner scanner = new Scanner(System.in);
+        gameRunning = true;
+
+
+        while (gameRunning && robot.isOperational() && !gameFinished) {
+            System.out.println("\n========================================");
             System.out.println("Your robot's name is: " + robot.getName());
             System.out.println("(1) Explore station");
             System.out.println("(2) Show status");
             System.out.println("(3) Recharge energy");
             System.out.println("(4) Repair");
             System.out.println("(5) Exit to main menu");
-            System.out.println("\n========================================");
-            System.out.println("Please choose a number between 1 and 5: ");
-        }
+            System.out.println("========================================");
+            System.out.print("Please choose a number between 1 and 5: ");
 
-        while(true) {
-            String choice = readUserInput();
-            handleUserInput(choice);
+            String input = scanner.nextLine();
+            handleUserInput(input);
         }
+        System.out.println("Exiting to main menu\n");
     }
 
     private String readUserInput() {
@@ -135,6 +135,7 @@ public class RobotGame {
             System.out.println("Nothing happened, continue exploring.");
         } else if (chance < 0.75) {
             System.out.println("An enemy appeared, you have to fight him!");
+            enemyEncounter();
         } else {
             System.out.println("A locked room is ahead, complete a challenge and unlock it!");
         }
@@ -243,58 +244,49 @@ public class RobotGame {
         double random = Math.random();
 
         if(random < 0.5){
-            return new TicTacToe();
+            return new Nim();
         }else{
             return new Nim();
         }
     }
 
-    private void fightingMechanic() {
-
-        Enemy enemies = generateEnemy();
-        boolean finished = false;
-        double random = Math.random();
-
-        while (robot.isOperational() && !enemies.isDefeated()) { 
-                    
+    private boolean fightingMechanic(Enemy enemy) {
+        while (robot.isOperational() && !enemy.isDefeated()) {
             System.out.println("You attack!");
-            if (random < 0.8){
+            if (Math.random() < 0.8) {
                 int damage = 10;
-                System.out.println("Your hit has dealt " + damage + " damage!");
-                enemies.takeDamage(damage);
+                System.out.println("You dealt " + damage + " damage!");
+                enemy.takeDamage(damage);
             } else {
                 System.out.println("You missed!");
             }
 
-            if (enemies.isDefeated()){
-                System.out.println("Enemy defeated!");
-                robot.addExperiencePoints(5);
-                finished = true;
-                break;
+            if (enemy.isDefeated()) {
+                System.out.println(" Enemy defeated!");
+                return true;
             }
 
-            enemies.fight(robot);
+            enemy.fight(robot);
 
-            if(!robot.isOperational()) {
-                System.out.println("You died");
-                break;
+            if (!robot.isOperational()) {
+                System.out.println(" You were destroyed...");
+                return false;
             }
-
         }
+
+        return false;
     }
 
-    public void enemyEncounter(Enemy enemy){
 
-        Enemy enemies = generateEnemy();
-        Game games = generateGame();
-        double random = Math.random();
-        //Game Nim = new Nim();
-
-        System.out.println("Warning! Enemy encountered: " +  enemies.name);
-
+    public void enemyEncounter() {
+        Scanner scanner = new Scanner(System.in);
+        Enemy enemy = generateEnemy();
+        Game game = generateGame();
         boolean finished = false;
 
-        while (finished){
+        System.out.println("\nWarning! Enemy encountered: " + enemy.name);
+
+        while (!finished) {
             System.out.println("\nWhat do you want to do?");
             System.out.println("(1) Fight");
             System.out.println("(2) Play a minigame");
@@ -302,40 +294,60 @@ public class RobotGame {
             System.out.print("Your choice: ");
             String choice = scanner.nextLine();
 
-            switch(choice){
-                case "1":
-                    fightingMechanic();
-                    break;
-                case "2":
-                    System.out.println("A game is being selected...");
-                    if(games instanceof TicTacToe) {
-                        System.out.println("TicTacToe was selected.");
-                    } else if (games instanceof Nim) {
-                            System.out.println("Nim was selected.");
-                    }
-
-                    while (!games.isFinished()) {
-                        games.playNextRound();
-                    }
-
-                    if (games.isWon()) {
-                     System.out.println("You've won the game and defeated the " + enemies.name + " !");
+            switch (choice) {
+                case "1": {
+                    boolean victory = fightingMechanic(enemy);
+                    if (victory) {
                         robot.addExperiencePoints(5);
-                        enemies.takeDamage(enemy.lifePoints);
-                    } else if (games.isLost()) {
-                        System.out.println("You've been defeated, try again!");
+                    } else {
+                        robot.addExperiencePoints(1);
+                    }
+                    finished = true;
+                    break;
+                }
+                case "2": {
+                    System.out.println("A game is being selected...");
+                    if (game instanceof TicTacToe) {
+                        System.out.println("TicTacToe was selected.");
+                    } else if (game instanceof Nim) {
+                        System.out.println("Nim was selected.");
+                    }
+
+                    while (!game.isFinished()) {
+                        game.playNextRound();
+                    }
+
+                    if (game.isWon()) {
+                        System.out.println("You've won the game and defeated the " + enemy.name + "!");
+                        enemy.takeDamage(enemy.lifePoints);
+                        robot.addExperiencePoints(5);
+                    } else if (game.isLost()) {
+                        System.out.println("You've been defeated in the game.");
                         robot.addExperiencePoints(1);
                     } else {
                         System.out.println("The game ended in a tie.");
                     }
+
+                    finished = true;
                     break;
-                case "3":
-                    if (random < 0.1) {
-                        System.out.println("You have successfully managed to flee the enemy!");
+                }
+                case "3": {
+                    if (Math.random() < 0.1) {
+                        System.out.println("You successfully fled!");
                     } else {
-                        fightingMechanic();
+                        System.out.println("You failed to flee. A fight begins!");
+                        boolean victory = fightingMechanic(enemy);
+                        if (victory) {
+                            robot.addExperiencePoints(5);
+                        } else {
+                            robot.addExperiencePoints(1);
+                        }
                     }
+                    finished = true;
                     break;
+                }
+                default:
+                    System.out.println("Invalid input. Please choose 1, 2, or 3.");
             }
         }
     }
