@@ -33,6 +33,7 @@ public class RobotGame {
     public RobotGame(String robotName, String shuttleName) {
         this.robot = new Robot(robotName);
         this.shuttle = new Shuttle(shuttleName);
+        this.challenge = null;
     }
 
     /**
