@@ -138,6 +138,7 @@ public class RobotGame {
             enemyEncounter();
         } else {
             System.out.println("A locked room is ahead, complete a challenge and unlock it!");
+            
         }
         int newEnergy = robot.getEnergy() - 10;
         robot.setEnergy(newEnergy);
