@@ -9,6 +9,8 @@ import games.Game;
 import games.Nim;
 import games.TicTacToe;
 import java.util.Scanner;
+
+import challenges.Challenge;
 import model.Artifact;
 import model.ElderGuardian;
 import model.Enemy;
@@ -21,15 +23,16 @@ public class RobotGame {
     private final Robot robot;
     private final Room[] rooms = new Room[3];
     private final Shuttle shuttle;
+    private final Challenge challenge;
     private boolean gameRunning = true;
     private boolean gameFinished = false;
 
     /**
      * Initialisiert einen neuen Roboter und ein Shuttle.
      */
-    public RobotGame(String name) {
-        this.robot = new Robot(name);
-        this.shuttle = new Shuttle("name");
+    public RobotGame(String robotName, String shuttleName) {
+        this.robot = new Robot(robotName);
+        this.shuttle = new Shuttle(shuttleName);
     }
 
     /**
@@ -138,7 +141,7 @@ public class RobotGame {
             enemyEncounter();
         } else {
             System.out.println("A locked room is ahead, complete a challenge and unlock it!");
-            
+            roomEncounter();
         }
         int newEnergy = robot.getEnergy() - 10;
         robot.setEnergy(newEnergy);
@@ -220,7 +223,6 @@ public class RobotGame {
                     break;
                 case "3":
                     done = true;
-                    //TODO: Menü anzeigen.
                     break;
                 default:
                     System.out.println("Invalid input. Please choose a correct number between 1 and 3.");
@@ -230,10 +232,9 @@ public class RobotGame {
             }
                 
     private Enemy generateEnemy(){
-        
         double Random = Math.random();
         
-        if(Random < 0.5){
+        if(Random < 0.5) {
             return new SpaceCreeper();
         }else{
             return new ElderGuardian();
@@ -241,13 +242,24 @@ public class RobotGame {
     }
 
     private Game generateGame() {
-
         double random = Math.random();
 
-        if(random < 0.5){
+        if(random < 0.5) {
             return new Nim();
         }else{
             return new Nim();
+        }
+    }
+
+    private Room generateRoom(int number) {
+        double random = Math.random();
+
+        if (random < 0.33) {
+            return new Room(number, new challenges.BinaryCode(), "Navigation module");
+        } else if (random < 0.66) {
+            return new Room(number, new challenges.MorseCode(), "Control system");
+        } else {
+            return new Room(number, new challenges.SecretCode(), "Energy crystal");
         }
     }
 
@@ -277,7 +289,6 @@ public class RobotGame {
 
         return false;
     }
-
 
     public void enemyEncounter() {
         Scanner scanner = new Scanner(System.in);
@@ -349,6 +360,31 @@ public class RobotGame {
                 }
                 default:
                     System.out.println("Invalid input. Please choose 1, 2, or 3.");
+            }
+        }
+    }
+
+    public void roomEncounter() {
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i] == null) {
+                Room newRoom = generateRoom(i + 1);
+                newRoom.setDiscovered(true);
+                rooms[i] = newRoom;
+
+                System.out.println("You discovered Room " + newRoom.getNumber() + "!");
+                System.out.println("Challenge: " + newRoom.getChallenge().getName());
+                System.out.println(newRoom.getChallenge().getDescription());
+
+                newRoom.getChallenge().start();
+
+                if (newRoom.getChallenge().isSolved()) {
+                    newRoom.setOpen(true);
+                    System.out.println("Success! Room " + newRoom.getNumber() + " is now open.");
+                } else {
+                    System.out.println("Challenge failed. Room " + newRoom.getNumber() + " remains locked.");
+                }
+
+                return;
             }
         }
     }

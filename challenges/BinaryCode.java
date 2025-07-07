@@ -2,7 +2,7 @@ package challenges;
 
 import java.util.Scanner;
 
-public class BinaryCode {
+public class BinaryCode implements Challenge {
     private final int[] digits = new int[3];
     private final String solution;
     private final int maxAttempts = 3;
@@ -11,58 +11,81 @@ public class BinaryCode {
     private boolean solved = false;
 
     public BinaryCode(){
-        String solutions="";
+        String solutions = "";
         attemptsLeft = maxAttempts;
 
-        for(int i = 0; i<3;i++){
-            digits[i]=(int)(Math.random()*10);
-            solutions= solutions+digits[i];
+        for(int i = 0; i < 3; i++){
+            digits[i] = (int)(Math.random() * 10);
+            solutions = solutions + digits[i];
         }
-
-        solution= solutions;
+        solution = solutions;
     }
 
-    public boolean start(){
+    public boolean tryCode(String input) {
+        if (solved || attemptsLeft <= 0) return false;
+
+        if (input.equalsIgnoreCase(solution)) {
+            System.out.println("Correct! The door magically opened.");
+            solved = true;
+            return true;
+        } else {
+            attemptsLeft--;
+            System.out.println("Wrong! Attempts left: " + attemptsLeft);
+            return false;
+        }
+    }
+
+    public void start(){
+        System.out.println("BinaryCode challenge started!");
+        System.out.println("Enter the 3 digit code, calculated from the binary numbers.");
+
         Scanner scanner= new Scanner(System.in);
 
         for (int i = 0; i < 3; i++) {
             String binary = Integer.toBinaryString(digits[i]);
-
-            while (binary.length()<4) {
-                
+            while (binary.length() < 4) {    
                 binary = "0" + binary;
                 
             }
             System.out.println(binary);
-
         }
 
-        while (
-            attemptsLeft > 0
-        ) { 
+        while(attemptsLeft > 0 && !solved) {
+            System.out.println("Attempt number: " + (maxAttempts - attemptsLeft + 1) + ".");
             long startTime = System.currentTimeMillis();
             String input = scanner.nextLine().toUpperCase();
-            long endTime = System.currentTimeMillis();
+            long duration = System.currentTimeMillis() - startTime;
 
-            long durationTime = endTime - startTime;
-
-            if(durationTime > timeLimit*1000){
-                System.out.println("zeit aus");
-                return false;
+            if (duration > timeLimit) {
+                System.out.println("Your time's up!");
+                break;
             }
-
-            if(input.equals(solution)){
-                System.err.println("Richtig");
-                solved = true;
-                return true;
-            }else{
-                System.out.println("wroooont");
-                attemptsLeft--;
-            }
-            
+            tryCode(input);
         }
-        return false;
 
+        if (!solved) {
+            System.out.println("You failed the challenge.");
+        }
     }
     
+    public boolean isSolved() {
+        return solved;
+    }
+
+    public int getAttemptsLeft() {
+        return attemptsLeft;
+    }
+
+    public String getDescription() {
+        return "You'll see a combination of 3 binary numbers (each 4 bits). " +
+               "Convert each to decimal and append them together to form a 3-digit code.";
+    }
+
+    public String getHint() {
+        return "Convert every binary number to a decimal and append them together.";
+    }
+
+    public String getName() {
+        return "BinaryCode";
+    }
 }

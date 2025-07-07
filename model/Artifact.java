@@ -11,9 +11,9 @@ public class Artifact implements Serializable {
 
     private static final long serialVersionUID = 3743681153808233500L;
 
-    public static final String NAVIGATION_MODULE = "Navigationsmodul";
-    public static final String CONTROL_SYSTEM = "Steuerungssystem";
-    public static final String ENERGY_CRYSTAL = "Energiekristall";
+    public static final String NAVIGATION_MODULE = "Navigation module";
+    public static final String CONTROL_SYSTEM = "Control system";
+    public static final String ENERGY_CRYSTAL = "Energy crystal";
 
     private final String name;
     private boolean found;

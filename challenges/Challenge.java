@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 public interface Challenge extends Serializable {
 
+    void start();
     /**
      * Attempts to solve the challenge by submitting the provided input.
      * The input can be code or any form of solution depending on the challenge implementation.

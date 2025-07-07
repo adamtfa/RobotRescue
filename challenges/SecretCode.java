@@ -3,36 +3,48 @@ package challenges;
 
 import java.util.Scanner;
 
-public class MorseCode implements Challenge {
-    private final String[] words = { "LAB", "CODE", "JAVA", "ROBOT", "BIRD", "SHUTTLE", "PIZZA" };
-    private final String[] morseCodes = {
-        " .-.. .- -...",
-        " -.-. --- -.. .", 
-        " .--- .- ...- .-",
-        " .-. --- -... --- -", 
-        "... .. .-. -..", 
-        " ... .... ..- - - .-.. .",
-        " .--. .. --.. --.. .-"
-    };
-
-    private final String solution;
+public class SecretCode implements Challenge {
+    
+    private static final String[] CODEWORDS = {"LAB", "CODE", "JAVA", "ROBOT", "BIRD", "SHUTTLE", "PIZZA"};
+    private String encrypted;
+    private String decrypted;
     private final int maxAttempts = 3;
     private int attemptsLeft;
     private final int timeLimit = 30000;
+    private int shift;
     private boolean solved = false;
-    private final String morse;
-    
-    public MorseCode() {
-        int index = (int)(Math.random() * words.length);
-        solution = words[index];
-        morse = morseCodes[index];
+
+    public SecretCode() {
         attemptsLeft = maxAttempts;
+        int index = (int)(Math.random() * CODEWORDS.length);
+        decrypted = CODEWORDS[index];
+        shift = (int)(Math.random() * 25) + 1;
+        encrypted = caesarChiffre(decrypted, shift);
+    }
+
+    private String caesarChiffre(String input, int shift){
+    String result = "";
+    
+    for (int i = 0; i < input.length(); i++) {
+        char normal = input.charAt(i);
+        char upper = Character.toUpperCase(normal);
+
+        if (upper >= 'A' && upper <= 'Z') {
+            int position = upper - 'A';
+            int shifted = (position + shift) % 26;
+            char finalChar = (char) ('A' + shifted);
+            result += finalChar;
+        } else {
+            result += upper;
+        }
+    }
+    return result;
     }
 
     public boolean tryCode(String input) {
-        if (solved || attemptsLeft <= 0) return false;
+        if (solved || attemptsLeft <= 0) {return false;}
 
-        if (input.equalsIgnoreCase(solution)) {
+        if (input.equalsIgnoreCase(decrypted)) {
             System.out.println("Correct! The door magically opened.");
             solved = true;
             return true;
@@ -44,8 +56,8 @@ public class MorseCode implements Challenge {
     }
 
     public void start() {
-        System.out.println("MorseCode challenge started!");
-        System.out.println("Decrypt code: " + morse);
+        System.out.println("SecretCode challenge started!");
+        System.out.println("Encrypted word: " + encrypted);
         System.out.println("You have " + maxAttempts + " attempts, 30 seconds each. \n");
 
         Scanner scanner = new Scanner(System.in);
@@ -77,14 +89,14 @@ public class MorseCode implements Challenge {
     }
 
     public String getDescription() {
-        return "Decrypt the following morsecode: " + morse;
+        return "Solve the Ceaser encryption and guess the correct word.";
     }
 
     public String getHint() {
-        return "Every  letter consists of periods (.) and hyphens (-). For example: A = .-";
+        return "Encrypted word: " + encrypted + " | Shifted by: " + shift;
     }
 
     public String getName() {
-        return "MorseCode";
-    }
-} 
+        return "SecretCode";
+    } 
+}

@@ -125,10 +125,12 @@ public class RobotApp {
      */
     public void startNewGame() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Choose a name for your robot: ");
-        String name = scanner.nextLine();
+        System.out.println("Choose a name for your robot: ");
+        String robotName = scanner.nextLine();
+        System.out.println("Choose a name for your shuttle: ");
+        String shuttleName = scanner.nextLine();
 
-        this.game = new RobotGame(name);
+        this.game = new RobotGame(robotName, shuttleName);
         game.run();
     }
 
