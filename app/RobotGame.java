@@ -248,7 +248,7 @@ public class RobotGame {
         if(random < 0.5) {
             return new Nim();
         }else{
-            return new Nim();
+            return new TicTacToe();
         }
     }
 
@@ -366,6 +366,7 @@ public class RobotGame {
     }
 
     public void roomEncounter() {
+        //TODO: Räume können mehrmals vorkommen.
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i] == null) {
                 Room newRoom = generateRoom(i + 1);
