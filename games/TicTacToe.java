@@ -98,21 +98,17 @@ public class TicTacToe implements Game {
         }
     }
 
-
     public boolean isFinished() {
         return isFinished;
     }
-
 
     public boolean isWon() {
         return won;
     }
 
-
     public boolean isLost() {
         return lost;
     }
-
 
     public int getCurrentRound() {
         return currentRound;

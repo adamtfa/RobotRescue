@@ -95,7 +95,6 @@ public class Nim implements Game {
         return currentRound;
     }
 
-
     public boolean isTie() {
         return isFinished && !won && !lost;
     }
