@@ -408,6 +408,7 @@ public class RobotGame {
      * Roboter trifft auf einen Raum und muss die dazugehörige Challenge absolvieren.
      */
     public void roomEncounter() {
+        //TODO: Räume können mehrmals vorkommen.
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i] == null) {
                 Room newRoom = generateRoom(i + 1);

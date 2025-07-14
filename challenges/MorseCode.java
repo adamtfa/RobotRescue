@@ -81,7 +81,7 @@ public class MorseCode implements Challenge {
     }
 
     public String getHint() {
-        return "Every  letter consists of periods (.) and hyphens (-). For example: A = .-";
+        return "Every letter consists of periods (.) and hyphens (-). For example: A = .-";
     }
 
     public String getName() {

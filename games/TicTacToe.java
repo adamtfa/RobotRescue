@@ -22,6 +22,7 @@ public class TicTacToe implements Game {
 
     public void playNextRound() {
         printBoard();
+        //TODO: Try catch für Zeichen-Exception.
         System.out.println("Choose your move (row and column: 1 2 for middle row, right column):");
 
         try {
