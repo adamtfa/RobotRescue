@@ -1,8 +1,17 @@
+/**
+ * Implementiert die BinaryCode-Challenge mithilfe des gegebenen Interfaces.
+ * Der Spieler muss einen 3-stelligen Dezimalcode erraten, der aus drei zufällig generierten Ziffern besteht.
+ * Diese Ziffern werden als 4-Bit-Binärzahlen angezeigt.
+ * 
+ * @author Adam Tuffaha & Nando Makeem Patton
+ */
+
 package challenges;
 
 import java.util.Scanner;
 
 public class BinaryCode implements Challenge {
+    
     private final int[] digits = new int[3];
     private final String solution;
     private final int maxAttempts = 3;
@@ -10,6 +19,9 @@ public class BinaryCode implements Challenge {
     private final int timeLimit = 30000;
     private boolean solved = false;
 
+    /**
+     * Konstruktor, generiert den 3-stelligen Lösungscode aus zufälligen Ziffern (0-9).
+     */
     public BinaryCode(){
         String solutions = "";
         attemptsLeft = maxAttempts;
@@ -21,6 +33,12 @@ public class BinaryCode implements Challenge {
         solution = solutions;
     }
 
+     /**
+     * Prüft, ob der eingegebene Code korrekt ist und aktualisiert den Status.
+     *
+     * @param input der eingegebene Code als String
+     * @return true, wenn der Code korrekt ist, sonst false
+     */
     public boolean tryCode(String input) {
         if (solved || attemptsLeft <= 0) return false;
 
@@ -35,6 +53,10 @@ public class BinaryCode implements Challenge {
         }
     }
 
+
+    /**
+     * Startet die Challenge, zeigt die Binärzahlen an und verarbeitet Eingaben mit Zeitlimit und Versuchen.
+     */
     public void start(){
         System.out.println("BinaryCode challenge started!");
         System.out.println("Enter the 3 digit code, calculated from the binary numbers.");

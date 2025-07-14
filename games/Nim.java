@@ -1,3 +1,9 @@
+/**
+ * Implementiert das Nim-Spiel mithilfe des gegebenen Interfaces.
+ *
+ * @author Adam Tuffaha & Nando Makeem Patton
+ */
+
 package games;
 
 import java.util.Random;
@@ -13,6 +19,9 @@ public class Nim implements Game {
     private boolean lost = false;
     private int currentRound = 0;
 
+    /**
+     * Führt die nächste Spielrunde aus, verarbeitet Spielereingaben und den Zug des Gegners.
+     */
     public void playNextRound() {
         printHeaps();
         System.out.println("Choose a heap (1-3) and how many stones to remove:");
@@ -44,6 +53,9 @@ public class Nim implements Game {
         currentRound++;
     }
 
+    /**
+     * Führt den Zug des Gegners aus, der zufällig Steine aus dem Haufen entfernt.
+     */
     private void enemyMove() {
         System.out.println("Enemy's turn:");
         while (true) {
@@ -57,10 +69,22 @@ public class Nim implements Game {
         }
     }
 
+    /**
+     * Prüft, ob der Spielzug gültig ist.
+     *
+     * @param heap der Index des Haufens (0–2)
+     * @param amount die Anzahl der zu entfernenden Steine (> 0)
+     * @return true, wenn der Zug gültig ist, sonst false
+     */
     private boolean isValidMove(int heap, int amount) {
         return heap >= 0 && heap < heaps.length && amount > 0 && amount <= heaps[heap];
     }
 
+    /**
+     * Prüft, ob das Spiel vorbei ist (alle Haufen leer sind).
+     *
+     * @return true, wenn keine Steine mehr übrig sind, sonst false
+     */
     private boolean isGameOver() {
         for (int heap : heaps) {
             if (heap > 0) return false;
@@ -68,6 +92,9 @@ public class Nim implements Game {
         return true;
     }
 
+    /**
+     * Gibt den aktuellen Zustand der Haufen auf der Konsole aus.
+     */
     private void printHeaps() {
         System.out.println("Current heaps:");
         for (int i = 0; i < heaps.length; i++) {

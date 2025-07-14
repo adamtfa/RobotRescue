@@ -1,7 +1,7 @@
 /**
-* Klasse für den Spielablauf.
-* @author Adam Tuffaha & Nando Makeem Patton
-*/
+ * Klasse für den Spielablauf.
+ * @author Adam Tuffaha & Nando Makeem Patton
+ */
 
 package app;
 
@@ -250,7 +250,7 @@ public class RobotGame {
                     }
                 }
             }
-    
+        
     /**
      * Generiert zufällig einen Feind der beiden möglichen Arten.
      * @return SpaceCreeper oder ElderGuardian

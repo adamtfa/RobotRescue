@@ -1,5 +1,11 @@
-package challenges;
+/**
+ * Implementiert die SecretCode-Challenge mithilfe des gegebenen Interfaces.
+ * Die Challenge besteht darin, ein mit Caesar-Chiffre verschlüsseltes Wort zu entschlüsseln.
+ * 
+ * @author Adam Tuffaha & Nando Makeem Patton
+ */
 
+package challenges;
 
 import java.util.Scanner;
 
@@ -14,6 +20,9 @@ public class SecretCode implements Challenge {
     private int shift;
     private boolean solved = false;
 
+    /**
+     * Konstruktor, wählt zufällig ein Wort aus und verschlüsselt es mit Caesar-Chiffre.
+     */
     public SecretCode() {
         attemptsLeft = maxAttempts;
         int index = (int)(Math.random() * CODEWORDS.length);
@@ -22,25 +31,38 @@ public class SecretCode implements Challenge {
         encrypted = caesarChiffre(decrypted, shift);
     }
 
+    /**
+     * Verschlüsselt einen String mit der Caesar-Chiffre.
+     *
+     * @param input der zu verschlüsselnde Text
+     * @param shift die Verschiebung im Alphabet
+     * @return der verschlüsselte Text
+     */
     private String caesarChiffre(String input, int shift){
-    String result = "";
+        String result = "";
     
-    for (int i = 0; i < input.length(); i++) {
-        char normal = input.charAt(i);
-        char upper = Character.toUpperCase(normal);
+        for (int i = 0; i < input.length(); i++) {
+            char normal = input.charAt(i);
+            char upper = Character.toUpperCase(normal);
 
-        if (upper >= 'A' && upper <= 'Z') {
-            int position = upper - 'A';
-            int shifted = (position + shift) % 26;
-            char finalChar = (char) ('A' + shifted);
-            result += finalChar;
-        } else {
-            result += upper;
+            if (upper >= 'A' && upper <= 'Z') {
+                int position = upper - 'A';
+                int shifted = (position + shift) % 26;
+                char finalChar = (char) ('A' + shifted);
+                result += finalChar;
+            } else {
+                result += upper;
+            }
         }
-    }
-    return result;
+        return result;
     }
 
+    /**
+     * Prüft, ob der eingegebene Code korrekt ist und aktualisiert den Status.
+     *
+     * @param input der eingegebene Code als String
+     * @return true, wenn der Code korrekt ist, sonst false
+     */
     public boolean tryCode(String input) {
         if (solved || attemptsLeft <= 0) {return false;}
 
@@ -55,6 +77,10 @@ public class SecretCode implements Challenge {
         }
     }
 
+    /**
+     * Startet die Challenge, zeigt das verschlüsselte Wort und verarbeitet Eingaben
+     * mit Zeitlimit und begrenzten Versuchen.
+     */
     public void start() {
         System.out.println("SecretCode challenge started!");
         System.out.println("Encrypted word: " + encrypted);
