@@ -1,9 +1,16 @@
-package challenges;
+/**
+ * Implementiert die MorseCode-Challenge mithilfe des gegebenen Interfaces.
+ * Der Spieler muss ein Wort anhand dessen Morse Code entschlüsseln.
+ * 
+ * @author Adam Tuffaha & Nando Makeem Patton
+ */
 
+package challenges;
 
 import java.util.Scanner;
 
 public class MorseCode implements Challenge {
+    
     private final String[] words = { "LAB", "CODE", "JAVA", "ROBOT", "BIRD", "SHUTTLE", "PIZZA" };
     private final String[] morseCodes = {
         " .-.. .- -...",
@@ -22,6 +29,9 @@ public class MorseCode implements Challenge {
     private boolean solved = false;
     private final String morse;
     
+    /**
+     * Konstruktor, wählt zufällig ein Wort und dessen Morsecode als Lösung aus.
+     */
     public MorseCode() {
         int index = (int)(Math.random() * words.length);
         solution = words[index];
@@ -29,6 +39,12 @@ public class MorseCode implements Challenge {
         attemptsLeft = maxAttempts;
     }
 
+    /**
+     * Prüft, ob der eingegebene Code korrekt ist und aktualisiert den Status.
+     *
+     * @param input der eingegebene Code als String
+     * @return true, wenn der Code korrekt ist, sonst false
+     */
     public boolean tryCode(String input) {
         if (solved || attemptsLeft <= 0) return false;
 
@@ -43,6 +59,10 @@ public class MorseCode implements Challenge {
         }
     }
 
+    /**
+     * Startet die Challenge, zeigt den Morsecode an und verarbeitet Benutzereingaben
+     * mit Zeitlimit und begrenzten Versuchen.
+     */
     public void start() {
         System.out.println("MorseCode challenge started!");
         System.out.println("Decrypt code: " + morse);

@@ -1,5 +1,10 @@
-package games;
+/**
+ * Implementiert das TicTacToe-Spiel mithilfe des gegebenen Interfaces.
+ *
+ * @author Adam Tuffaha & Nando Makeem Patton
+ */
 
+package games;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,6 +17,9 @@ public class TicTacToe implements Game {
     private boolean lost = false;
     private int currentRound = 0;
 
+    /**
+     * Konstruktor, initialisiert ein neues Board als Array mit 3x3 Feldern.
+     */
     public TicTacToe() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -19,10 +27,12 @@ public class TicTacToe implements Game {
             }
         }
     }
-
+    
+    /**
+     * Führt die nächste Spielrunde aus, verarbeitet Spielereingaben und den Zug des Gegners.
+     */
     public void playNextRound() {
         printBoard();
-        //TODO: Try catch für Zeichen-Exception.
         System.out.println("Choose your move (row and column: 1 2 for middle row, right column):");
 
         try {
@@ -63,10 +73,20 @@ public class TicTacToe implements Game {
         currentRound++;
     }
 
+    /**
+     * Prüft, ob der Spielzug an der angegebenen Position gültig ist.
+     *
+     * @param row die Zeile des Zuges (0–2)
+     * @param col die Spalte des Zuges (0–2)
+     * @return true, wenn der Zug gültig ist, sonst false
+     */
     private boolean isValidMove(int row, int col) {
         return row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == ' ';
     }
 
+    /**
+     * Führt den nächsten Zug des Gegners aus, indem das erste freie Feld gewählt wird.
+     */
     private void makeEnemyMove() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -78,6 +98,12 @@ public class TicTacToe implements Game {
         }
     }
 
+    /**
+     * Prüft, ob der Spieler das Spiel gewonnen hat.
+     *
+     * @param player das Spielersymbol ('X' oder 'O')
+     * @return true, wenn der Spieler gewonnen hat, sonst false
+     */
     private boolean checkWin(char player) {
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == player && board[i][1] == player && board[i][2] == player) return true;
@@ -88,6 +114,11 @@ public class TicTacToe implements Game {
         return false;
     }
 
+    /**
+     * Prüft, ob das Spielfeld vollständig belegt ist.
+     *
+     * @return true, wenn keine freien Felder mehr vorhanden sind, sonst false
+     */
     private boolean isBoardFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -97,6 +128,9 @@ public class TicTacToe implements Game {
         return true;
     }
 
+    /**
+     * Gibt das aktuelle Spielfeld auf der Konsole aus.
+     */
     private void printBoard() {
         System.out.println("Board:");
         for (int i = 0; i < 3; i++) {
