@@ -55,8 +55,6 @@ public class Shuttle implements Serializable {
          }   
         }
         System.out.println("Method not implemented yet.");
-        // TODO: Durchlaufe das Array 'artifacts' und vergleiche jeden Namen (ignoriere Groß-/Kleinschreibung).
-        // Gib das passende Artefakt zurück, wenn es gefunden wurde, sonst null.
         return null;
     }
 
@@ -72,18 +70,19 @@ public class Shuttle implements Serializable {
                 return false;
             }
         }
-        // TODO: Überprüfe für jedes Artefakt im Array 'artifacts', ob es installiert ist.
-        // Sobald ein Artefakt nicht installiert ist, gib false zurück.
-        // Falls alle installiert sind, gib true zurück.
-        System.out.println("Method not implemented yet.");
         return true;
     }
 
+    /**
+     * Gibt den Fund- und Installationsstatus jedes Artefakts aus.
+     */
     public void foundArtifacts() {
         for(Artifact a : artifacts) {
             if(a.isInstalled()) {
                 System.out.println("The module " + a.getName() + " is installed.");
-            } else {
+            } else if (a.isFound()){
+                System.out.println("The module " + a.getName() + " was found but not installed.");
+            }else {
                 System.out.println("The module " + a.getName() + " is yet to be found.");
             }
         }

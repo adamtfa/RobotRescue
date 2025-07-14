@@ -5,13 +5,11 @@
 
 package app;
 
-import app.RobotApp;
+import challenges.Challenge;
 import games.Game;
 import games.Nim;
 import games.TicTacToe;
 import java.util.Scanner;
-
-import challenges.Challenge;
 import model.Artifact;
 import model.ElderGuardian;
 import model.Enemy;
@@ -28,7 +26,10 @@ public class RobotGame {
     private final Challenge challenge;
     private boolean gameRunning = true;
     private boolean gameFinished = false;
-
+    private boolean binaryUsed = false;
+    private boolean morseUsed = false;
+    private boolean secretUsed = false;
+    
     /**
      * Initialisiert einen neuen Roboter und ein Shuttle.
      */
@@ -269,7 +270,7 @@ public class RobotGame {
      * Generiert zufällig eins der beiden Minigames.
      * @return TicTacToe oder Nim
      */
-    private Game generateGame() {
+private Game generateGame() {
         double random = Math.random();
 
         if(random < 0.5) {
@@ -284,16 +285,50 @@ public class RobotGame {
      * @param number
      * @return einen der drei Räume
      */
-    private Room generateRoom(int number) {
-        double random = Math.random();
 
-        if (random < 0.33) {
-            return new Room(number, new challenges.BinaryCode(), "Navigation module");
-        } else if (random < 0.66) {
-            return new Room(number, new challenges.MorseCode(), "Control system");
-        } else {
-            return new Room(number, new challenges.SecretCode(), "Energy crystal");
+    private Room generateRoom(int number) {
+        int remaining = 0;
+        if(!binaryUsed) remaining++;
+        if(!morseUsed) remaining++;
+        if(!secretUsed) remaining++;
+
+        if (remaining== 0){
+            System.out.println("no Challenges left.");
         }
+        int random = (int)(Math.random()*remaining);
+
+        if(!binaryUsed && random == 0){
+            binaryUsed = true;
+            return new Room(number, new challenges.BinaryCode(), "Navigation module");
+        }else if(!binaryUsed){
+            random--;
+        }
+
+        if(!morseUsed && random == 0){
+            morseUsed = true;
+            return new Room(number, new challenges.MorseCode(), "Control system");
+        }else if(!morseUsed){
+            random--;
+        }
+
+        if(!secretUsed && random == 0){
+            secretUsed = true;
+            return new Room(number, new challenges.SecretCode(), "Energy crystal");
+        }else if(!secretUsed){
+            random--;
+        }
+
+
+        //if (random < 0.33) {
+        //    return new Room(number, new challenges.BinaryCode(), "Navigation module");
+        //} else if (random < 0.66) {
+        //    return new Room(number, new challenges.MorseCode(), "Control system");
+        //} else {
+        //    return new Room(number, new challenges.SecretCode(), "Energy crystal");
+        //}
+
+        System.out.println("empty Room");
+        return new Room(number, null, "null");
     }
 
     /**
@@ -408,26 +443,46 @@ public class RobotGame {
      * Roboter trifft auf einen Raum und muss die dazugehörige Challenge absolvieren.
      */
     public void roomEncounter() {
-        //TODO: Räume können mehrmals vorkommen.
-        for (int i = 0; i < rooms.length; i++) {
-            if (rooms[i] == null) {
-                Room newRoom = generateRoom(i + 1);
-                newRoom.setDiscovered(true);
-                rooms[i] = newRoom;
+        int random = (int)(Math.random() * 3);
 
-                System.out.println("You discovered Room " + newRoom.getNumber() + "!");
-                System.out.println("Challenge: " + newRoom.getChallenge().getName());
-                System.out.println(newRoom.getChallenge().getDescription());
-
-                newRoom.getChallenge().start();
-
-                if (newRoom.getChallenge().isSolved()) {
-                    newRoom.setOpen(true);
-                    System.out.println("Success! Room " + newRoom.getNumber() + " is now open.");
-                } else {
-                    System.out.println("Challenge failed. Room " + newRoom.getNumber() + " remains locked.");
-                }
-            }
+        if(rooms[random] != null && rooms[random].isOpen()){
+            System.out.println("You already opened this room.");
+            return;
         }
+
+        if(rooms[random] == null){
+            Room newRoom = generateRoom(random + 1);
+            newRoom.setDiscovered(true);
+            rooms[random] = newRoom;
+        }
+
+        Room room = rooms[random];
+        
+
+            System.out.println("You discovered Room " + room.getNumber() + "!");
+            System.out.println("Challenge: " + room.getChallenge().getName());
+            System.out.println(room.getChallenge().getDescription());
+
+            room.getChallenge().start();
+
+            if (room.getChallenge().isSolved()) {
+                room.setOpen(true);
+
+                System.out.println("Success! Room " + room.getNumber() + " is now open.");
+
+                Artifact artifact = shuttle.getArtifactByName(room.getArtifact());
+
+                if(artifact != null){
+                    artifact.setFound(true);
+                    System.out.println("You found an artifact: " + artifact.getName());
+                }else{
+                    System.out.println("No matching artifact found for: " + room.getArtifact());
+                }
+            } else {
+                System.out.println("Challenge failed. Room " + room.getNumber() + " remains locked.");
+            }
+        
+        
+        
     }
 }
