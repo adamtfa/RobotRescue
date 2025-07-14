@@ -9,11 +9,6 @@ import java.io.Serializable;
 
 public class Robot implements Serializable {
 
-
-
-    // Bitte serialVersionUID beibehalten, damit die Klasse bei der
-    // Speicherung als Datei (Serialisierung) und beim Laden (Deserialisierung)
-    // konsistent bleibt und Versionierungsprobleme vermieden werden.
     private final String name;
     private int energy = 50;
     private int damage = 0;
