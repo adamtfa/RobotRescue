@@ -1,5 +1,6 @@
 package games;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TicTacToe implements Game {
@@ -22,9 +23,11 @@ public class TicTacToe implements Game {
     public void playNextRound() {
         printBoard();
         System.out.println("Choose your move (row and column: 1 2 for middle row, right column):");
-        int row = scanner.nextInt() - 1;
-        int col = scanner.nextInt() - 1;
-        scanner.nextLine();
+
+        try {
+            int row = scanner.nextInt() - 1;
+            int col = scanner.nextInt() - 1;
+            scanner.nextLine();
 
         if (isValidMove(row, col)) {
             board[row][col] = 'X';
@@ -52,7 +55,10 @@ public class TicTacToe implements Game {
         } else {
             System.out.println("Invalid move. Try again.");
         }
-
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input! Please enter two numbers.");
+            scanner.nextLine();
+        }
         currentRound++;
     }
 
@@ -98,21 +104,17 @@ public class TicTacToe implements Game {
         }
     }
 
-
     public boolean isFinished() {
         return isFinished;
     }
-
 
     public boolean isWon() {
         return won;
     }
 
-
     public boolean isLost() {
         return lost;
     }
-
 
     public int getCurrentRound() {
         return currentRound;

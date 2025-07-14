@@ -5,6 +5,7 @@
 
 package app;
 
+import app.RobotApp;
 import games.Game;
 import games.Nim;
 import games.TicTacToe;
@@ -20,6 +21,7 @@ import model.Shuttle;
 import model.SpaceCreeper;
 
 public class RobotGame {
+    private final RobotApp robotApp;
     private final Robot robot;
     private final Room[] rooms = new Room[3];
     private final Shuttle shuttle;
@@ -31,6 +33,7 @@ public class RobotGame {
      * Initialisiert einen neuen Roboter und ein Shuttle.
      */
     public RobotGame(String robotName, String shuttleName) {
+        this.robotApp = new RobotApp();
         this.robot = new Robot(robotName);
         this.shuttle = new Shuttle(shuttleName);
         this.challenge = null;
@@ -75,7 +78,6 @@ public class RobotGame {
         Scanner scanner = new Scanner(System.in);
         gameRunning = true;
 
-
         while (gameRunning && robot.isOperational() && !gameFinished) {
             System.out.println("\n========================================");
             System.out.println("Your robot's name is: " + robot.getName());
@@ -93,13 +95,20 @@ public class RobotGame {
         System.out.println("Exiting to main menu\n");
     }
 
+    /**
+     * Liest die Benutzereingabe der Konsole.
+     * @return userInput
+     */
     private String readUserInput() {
         Scanner scanner = new Scanner(System.in);
         String userInput = scanner.nextLine();
-        // TBD
         return userInput;
     }
 
+    /**
+     * Prüft und verarbeitet den Input. (gültig/ungültig etc.)
+     * @param input
+     */
     private void handleUserInput(String input) {
         switch (input) {
             case "1":
@@ -116,7 +125,8 @@ public class RobotGame {
                 this.repairMenu();
                 break;
             case "5":
-                //TODO: Zurück zum Hauptmenü gehen!
+                robotApp.showMainMenu();
+                gameRunning = false;
                 break;
             default:
                 System.out.println("Invalid input. Please choose a correct number between 1 and 5.");
@@ -132,6 +142,9 @@ public class RobotGame {
         return robot;
     }
 
+    /**
+     * Methode zur Erkundung der Raumstation.
+     */
     public void exploreStation() {
         double chance = Math.random();
         
@@ -148,6 +161,9 @@ public class RobotGame {
         robot.setEnergy(newEnergy);
         }
 
+    /**
+     * Methode, um den Status des Roboters im derzeitigen Spiel anzuzeigen.
+     */
     public void showStatus() {
         System.out.println("Robot: " + robot.getName());
         System.out.println("========================================");
@@ -180,6 +196,9 @@ public class RobotGame {
         System.out.println("========================================");
     }
 
+    /**
+     * Methode, um das Menü zur Reparatur des Roboters und des Shuttles anzuzeigen.
+     */
     public void repairMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean done = false;
@@ -207,7 +226,7 @@ public class RobotGame {
                         System.out.println("You need a minimum of 50 EXP to carry out this action!");
                         break;
                     }
-                    //if(robot.getExperiencePoints() >= 50) {
+                    if(robot.getExperiencePoints() >= 50) {
                         for(Artifact a: shuttle.getArtifacts()) {
                             if(a.isFound() && !a.isInstalled()) {
                                 a.install();
@@ -220,7 +239,7 @@ public class RobotGame {
                             gameFinished = true;
                             done = true;
                         }
-                    //}
+                    }
                     break;
                 case "3":
                     done = true;
@@ -231,7 +250,11 @@ public class RobotGame {
                     }
                 }
             }
-                
+    
+    /**
+     * Generiert zufällig einen Feind der beiden möglichen Arten.
+     * @return SpaceCreeper oder ElderGuardian
+     */
     private Enemy generateEnemy(){
         double Random = Math.random();
         
@@ -242,16 +265,25 @@ public class RobotGame {
         }
     }
 
+    /**
+     * Generiert zufällig eins der beiden Minigames.
+     * @return TicTacToe oder Nim
+     */
     private Game generateGame() {
         double random = Math.random();
 
         if(random < 0.5) {
             return new Nim();
         }else{
-            return new Nim();
+            return new TicTacToe();
         }
     }
 
+    /**
+     * Generiert zufällig einen der drei Räume für die Challenges und Artefakte.
+     * @param number
+     * @return einen der drei Räume
+     */
     private Room generateRoom(int number) {
         double random = Math.random();
 
@@ -264,6 +296,11 @@ public class RobotGame {
         }
     }
 
+    /**
+     * Kampfmethode, so lange bis entweder der Roboter oder der Feind außer gefecht gesetzt wurde.
+     * @param enemy
+     * @return true/false je nach Ausgang des Kampfes
+     */
     private boolean fightingMechanic(Enemy enemy) {
         while (robot.isOperational() && !enemy.isDefeated()) {
             System.out.println("You attack!");
@@ -287,10 +324,12 @@ public class RobotGame {
                 return false;
             }
         }
-
         return false;
     }
 
+    /**
+     * Zeigt ein Menü mit Optionen an, die bei der Konfrontation mit einem Feind zur Auswahl stehen.
+     */
     public void enemyEncounter() {
         Scanner scanner = new Scanner(System.in);
         Enemy enemy = generateEnemy();
@@ -365,6 +404,9 @@ public class RobotGame {
         }
     }
 
+    /**
+     * Roboter trifft auf einen Raum und muss die dazugehörige Challenge absolvieren.
+     */
     public void roomEncounter() {
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i] == null) {
@@ -384,8 +426,6 @@ public class RobotGame {
                 } else {
                     System.out.println("Challenge failed. Room " + newRoom.getNumber() + " remains locked.");
                 }
-
-                return;
             }
         }
     }

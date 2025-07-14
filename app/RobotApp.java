@@ -1,3 +1,8 @@
+/**
+* Klasse für das Hauptmenü.
+* @author Adam Tuffaha & Nando Makeem Patton
+*/
+
 package app;
 
 import java.io.File;
@@ -66,7 +71,7 @@ public class RobotApp {
 
     /**
      * Liest die Benutzereingabe der Konsole.
-     * @return userInput
+     * @return Scanner Eingabe.
      */
     private String readUserInput() {
         Scanner scanner = new Scanner(System.in);

@@ -3,7 +3,6 @@
 * @author Adam Tuffaha & Nando Makeem Patton
 */
 
-
 package model;
 
 import java.io.Serializable;
