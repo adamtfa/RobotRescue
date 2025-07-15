@@ -126,7 +126,6 @@ public class RobotGame {
                 this.repairMenu();
                 break;
             case "5":
-                robotApp.showMainMenu();
                 gameRunning = false;
                 break;
             default:
